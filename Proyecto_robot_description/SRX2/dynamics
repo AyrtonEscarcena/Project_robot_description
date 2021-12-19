@@ -1,0 +1,188 @@
+#!/usr/bin/env python
+import rospy
+from sensor_msgs.msg import JointState
+from markers import *
+from functions import *
+from roslib import packages
+ 
+import rbdl
+ 
+# Lectura del modelo del robot a partir de URDF (parsing)
+modelo = rbdl.loadModel('../urdf/Proyecto_robot.xacro')
+# Grados de libertad
+ndof = modelo.q_size
+ 
+# Configuracion articular
+q = np.array([0.5, 0.2, 0.3, 0.8, 0.5, 0.6])
+# Velocidad articular
+dq = np.array([0.8, 0.7, 0.8, 0.6, 0.9, 1.0])
+# Aceleracion articular
+ddq = np.array([0.2, 0.5, 0.4, 0.3, 1.0, 0.5])
+ 
+# Arrays numpy
+zeros = np.zeros(ndof)          # Vector de ceros
+tau   = np.zeros(ndof)          # Para torque
+tau2   = np.zeros(ndof)          # Para torque
+g     = np.zeros(ndof)          # Para la gravedad
+c     = np.zeros(ndof)          # Para el vector de Coriolis+centrifuga
+Mi    = np.zeros(ndof)
+M     = np.zeros([ndof, ndof])  # Para la matriz de inercia
+e     = np.eye(6)               # Vector identidad
+ 
+# Torque dada la configuracion del robot
+rbdl.InverseDynamics(modelo, q, dq, ddq, tau)
+ 
+#Calcular vector de gravedad, vector de Coriolis/centrifuga,
+# y matriz M usando solamente InverseDynamics
+ 
+rbdl.InverseDynamics(modelo,q,zeros,zeros,g)
+rbdl.InverseDynamics(modelo,q,dq,zeros,c)
+c=c-g
+for i in range(6):
+    rbdl.InverseDynamics(modelo,q,zeros,e[i],Mi)
+    M[i]=Mi-g
+ 
+g=np.round(g,2)
+c=np.round(c,2)
+M=np.round(M,2)
+print("Parte 1:")
+print("g:")
+print(g)
+print("\n")
+print("c:")
+print(c)
+print("\n")
+print("M:")
+print(M)
+print("\n")
+# Calcular M y los efectos no lineales b usando las funciones
+# CompositeRigidBodyAlgorithm y NonlinearEffects. Almacenar los resultados
+# en los arreglos llamados M2 y b2
+b2 = np.zeros(ndof)          # Para efectos no lineales
+M2 = np.zeros([ndof, ndof])  # Para matriz de inercia
+rbdl.CompositeRigidBodyAlgorithm(modelo,q,M2)
+rbdl.NonlinearEffects(modelo,q,dq,b2)
+M2=np.round(M2,2)
+b2=np.round(b2,2)
+# Parte 2: Verificacion de valores
+ 
+ 
+print("Parte 2:")
+print("b:")
+print(b2)
+print("\n")
+print("M:")
+print(M2)
+print("\n")
+ 
+ 
+# Parte 3: Verificacion de la expresion de la dinamica
+ 
+tau2=np.round(M.dot(ddq)+c+g,2)
+tau3=np.round(M2.dot(ddq)+b2,2)
+print("Parte 3:")
+print("Tau - InverseDynamics")
+print(tau2)
+print("\n")
+print("Tau - Composite And NonLinear")
+print(tau3)
+print("\n")
+
+
+ 
+rospy.init_node("control_pdg")
+pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
+bmarker_actual  = BallMarker(color['RED'])
+bmarker_deseado = BallMarker(color['GREEN'])
+# Archivos donde se almacenara los datos
+fqact = open("/tmp/qactual.dat", "w")
+fqdes = open("/tmp/qdeseado.dat", "w")
+fxact = open("/tmp/xactual.dat", "w")
+fxdes = open("/tmp/xdeseado.dat", "w")
+ 
+# Nombres de las articulaciones
+jnames = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
+          'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+# Objeto (mensaje) de tipo JointState
+jstate = JointState()
+# Valores del mensaje
+jstate.header.stamp = rospy.Time.now()
+jstate.name = jnames
+ 
+# =============================================================
+# Configuracion articular inicial (en radianes)
+q = np.array([0.0, -1.0, 1.7, -2.2, -1.6, 0.0])
+# Velocidad inicial
+dq = np.array([0., 0., 0., 0., 0., 0.])
+# Configuracion articular deseada
+qdes = np.array([1.0, -1.0, 1.0, 1.3, -1.5, 1.0])
+# =============================================================
+ 
+# Posicion resultante de la configuracion articular deseada
+xdes = ur5_fkine(qdes)[0:3,3]
+# Copiar la configuracion articular en el mensaje a ser publicado
+jstate.position = q
+pub.publish(jstate)
+ 
+# Modelo RBDL
+modelo = rbdl.loadModel('../urdf/Proyecto_robot.xacro')
+ndof   = modelo.q_size     # Grados de libertad
+ 
+# Frecuencia del envio (en Hz)
+freq = 20
+dt = 1.0/freq
+rate = rospy.Rate(freq)
+ 
+# Simulador dinamico del robot
+robot = Robot(q, dq, ndof, dt)
+ 
+# Se definen las ganancias del controlador
+valores = 0.1*np.array([5.0, 1.0, 1.0, 1.0, 3.0, 1.0])
+Kp = np.diag(valores)
+Kd = 1.5*np.sqrt(Kp)
+g  = np.zeros(ndof)
+zeros = np.zeros(ndof)
+# Bucle de ejecucion continua
+t = 0.0
+while not rospy.is_shutdown():
+ 
+    # Leer valores del simulador
+    q  = robot.read_joint_positions()
+    dq = robot.read_joint_velocities()
+    # Posicion actual del efector final
+    x = ur5_fkine(q)[0:3,3]
+    # Tiempo actual (necesario como indicador para ROS)
+    jstate.header.stamp = rospy.Time.now()
+ 
+    # Almacenamiento de datos
+    fxact.write(str(t)+' '+str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
+    fxdes.write(str(t)+' '+str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
+    fqact.write(str(t)+' '+str(q[0])+' '+str(q[1])+' '+ str(q[2])+' '+ str(q[3])+' '+str(q[4])+' '+str(q[5])+'\n ')
+    fqdes.write(str(t)+' '+str(qdes[0])+' '+str(qdes[1])+' '+ str(qdes[2])+' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+'\n ')
+ 
+    # ----------------------------
+    # Control dinamico (COMPLETAR)
+    # ----------------------------
+    u = np.zeros(ndof)   # Reemplazar por la ley de control
+ 
+    rbdl.InverseDynamics(modelo,q,zeros,zeros,g)
+    u = g - Kd.dot(dq) + Kp.dot(qdes-q) 
+    print(u)
+ 
+ 
+    # Simulacion del robot
+    robot.send_command(u)
+ 
+    # Publicacion del mensaje
+    jstate.position = q
+    pub.publish(jstate)
+    bmarker_deseado.xyz(xdes)
+    bmarker_actual.xyz(x)
+    t = t+dt
+    # Esperar hasta la siguiente  iteracion
+    rate.sleep()
+ 
+fqact.close()
+fqdes.close()
+fxact.close()
+fxdes.close()

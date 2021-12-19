@@ -1,0 +1,9 @@
+<launch>
+  <arg default="$(find Proyecto_robot_description)/urdf/Proyecto_robot.xacro" name="model"/>
+  <arg default="true" name="gui"/>
+  <arg default="$(find Proyecto_robot_description)/launch/urdf.rviz" name="rvizconfig"/>
+  <param command="$(find xacro)/xacro $(arg model)" name="robot_description"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node args="-d $(arg rvizconfig)" name="rviz" pkg="rviz" required="true" type="rviz"/>
+</launch>

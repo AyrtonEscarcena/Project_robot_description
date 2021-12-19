@@ -1,0 +1,400 @@
+<?xml version="1.0" ?>
+<robot name="Proyecto_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find Proyecto_robot_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find Proyecto_robot_description)/urdf/Proyecto_robot.trans" />
+<xacro:include filename="$(find Proyecto_robot_description)/urdf/Proyecto_robot.gazebo" />
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>-->
+<link name="base_link">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <mass value="7.515592835274655"/>
+    <inertia ixx="0.022536" ixy="-0.0" ixz="0.0" iyy="0.022536" iyz="-0.0" izz="0.043068"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component14_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="6.822320486321587e-13 -3.193731681911223e-11 -0.04919483100108901"/>
+    <mass value="3.876479897603745"/>
+    <inertia ixx="0.004691" ixy="-0.0" ixz="-0.0" iyy="0.004691" iyz="0.0" izz="0.003092"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.64 0.0 -0.75"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component14_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.64 0.0 -0.75"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component14_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component13_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.03749999998098341 -1.2166751014171874e-10 -0.002499999953929466"/>
+    <mass value="3.156672298327024"/>
+    <inertia ixx="0.002716" ixy="-0.0" ixz="2e-05" iyy="0.002907" iyz="0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.6 0.0 -0.79"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component13_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.6 0.0 -0.79"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component13_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component12_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.04999999998096316 -1.2203037810843445e-10 4.535805064875831e-11"/>
+    <mass value="3.9458403729087896"/>
+    <inertia ixx="0.003157" ixy="0.0" ixz="-0.0" iyy="0.004867" iyz="0.0" izz="0.004867"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.5 0.0 -0.79"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component12_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.5 0.0 -0.79"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component12_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component11_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.002499999980983769 -1.2166705952994858e-10 0.037500000044644266"/>
+    <mass value="3.156672298327024"/>
+    <inertia ixx="0.002716" ixy="0.0" ixz="-2e-05" iyy="0.002907" iyz="0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.46 0.0 -0.75"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component11_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.46 0.0 -0.75"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component11_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component10_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-1.8099299836649152e-11 -1.0531080358510585e-10 0.07500000004462448"/>
+    <mass value="5.91876055936317"/>
+    <inertia ixx="0.013465" ixy="0.0" ixz="0.0" iyy="0.013465" iyz="0.0" izz="0.004735"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.46 0.0 -0.6"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component10_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.46 0.0 -0.6"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component10_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component9_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.037499999982817334 -8.895458316739984e-11 0.002500000044603823"/>
+    <mass value="3.156672298327025"/>
+    <inertia ixx="0.002716" ixy="0.0" ixz="-2e-05" iyy="0.002907" iyz="0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.42 0.0 -0.56"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component9_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.42 0.0 -0.56"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component9_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component8_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.09999999998283796 -8.859130186327942e-11 4.3483106004771344e-11"/>
+    <mass value="7.891680745817552"/>
+    <inertia ixx="0.006313" ixy="-0.0" ixz="-0.0" iyy="0.029462" iyz="0.0" izz="0.029462"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.22 0.0 -0.56"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component8_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.22 0.0 -0.56"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component8_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component7_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.002499999982223222 -8.829804254666008e-11 0.0375000000425737"/>
+    <mass value="3.1566722983270235"/>
+    <inertia ixx="0.002716" ixy="0.0" ixz="-2e-05" iyy="0.002907" iyz="0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.18 -0.0 -0.52"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component7_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.18 -0.0 -0.52"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component7_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component6_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="1.1070228067566745e-11 2.6966852524683497e-11 0.14999999999446464"/>
+    <mass value="11.837521118726338"/>
+    <inertia ixx="0.093516" ixy="0.0" ixz="-0.0" iyy="0.093516" iyz="-0.0" izz="0.00947"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.18 -0.0 -0.22"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.18 -0.0 -0.22"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component5_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.03750000000530407 3.5477430809969356e-13 0.0024999999945416185"/>
+    <mass value="3.156672298327024"/>
+    <inertia ixx="0.002716" ixy="-0.0" ixz="-2e-05" iyy="0.002907" iyz="-0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.14 0.0 -0.18"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.14 0.0 -0.18"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component4_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.050000000005227425 -6.164420655582977e-17 -2.7676749780880527e-12"/>
+    <mass value="3.94584037290878"/>
+    <inertia ixx="0.003157" ixy="-0.0" ixz="0.0" iyy="0.004867" iyz="0.0" izz="0.004867"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.04 0.0 -0.18"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.04 0.0 -0.18"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component3_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.0024999999999996284 -3.5490384150642065e-13 0.03749999999999987"/>
+    <mass value="3.156672298327024"/>
+    <inertia ixx="0.002716" ixy="-0.0" ixz="-2e-05" iyy="0.002907" iyz="-0.0" izz="0.002716"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.0 -0.0 -0.14"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.0 -0.0 -0.14"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Component2_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.07"/>
+    <mass value="5.524176522072291"/>
+    <inertia ixx="0.011232" ixy="0.0" ixz="0.0" iyy="0.011232" iyz="0.0" izz="0.004419"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.0 -0.0 -0.0"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.0 -0.0 -0.0"/>
+    <geometry>
+      <mesh filename="package://Proyecto_robot_description/meshes/Component2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Rev1" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 0.0 -0.04"/>
+  <parent link="Component13_1"/>
+  <child link="Component14_1"/>
+  <axis xyz="0.0 0.0 -1.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid2" type="fixed">
+  <origin rpy="0 0 0" xyz="0.1 0.0 0.0"/>
+  <parent link="Component12_1"/>
+  <child link="Component13_1"/>
+</joint>
+
+<joint name="Rev3" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 0.0 0.04"/>
+  <parent link="Component11_1"/>
+  <child link="Component12_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid4" type="fixed">
+  <origin rpy="0 0 0" xyz="0.0 0.0 0.15"/>
+  <parent link="Component10_1"/>
+  <child link="Component11_1"/>
+</joint>
+
+<joint name="Rev5" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 0.0 0.04"/>
+  <parent link="Component9_1"/>
+  <child link="Component10_1"/>
+  <axis xyz="-0.0 -0.0 1.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid6" type="fixed">
+  <origin rpy="0 0 0" xyz="0.2 0.0 0.0"/>
+  <parent link="Component8_1"/>
+  <child link="Component9_1"/>
+</joint>
+
+<joint name="Rev7" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 -0.0 0.04"/>
+  <parent link="Component7_1"/>
+  <child link="Component8_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid8" type="fixed">
+  <origin rpy="0 0 0" xyz="0.0 0.0 0.3"/>
+  <parent link="Component6_1"/>
+  <child link="Component7_1"/>
+</joint>
+
+<joint name="Rev9" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 0.0 0.04"/>
+  <parent link="Component5_1"/>
+  <child link="Component6_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid10" type="fixed">
+  <origin rpy="0 0 0" xyz="0.1 0.0 0.0"/>
+  <parent link="Component4_1"/>
+  <child link="Component5_1"/>
+</joint>
+
+<joint name="Rev11" type="continuous">
+  <origin rpy="0 0 0" xyz="0.04 -0.0 0.04"/>
+  <parent link="Component3_1"/>
+  <child link="Component4_1"/>
+  <axis xyz="1.0 0.0 0.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+<joint name="Rigid14" type="fixed">
+  <origin rpy="0 0 0" xyz="0.0 0.0 0.14"/>
+  <parent link="Component2_1"/>
+  <child link="Component3_1"/>
+</joint>
+
+<joint name="Rev15" type="continuous">
+  <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+  <parent link="base_link"/>
+  <child link="Component2_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <dynamics damping="50" friction="1"/>
+</joint>
+
+</robot>

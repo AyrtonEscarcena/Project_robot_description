@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+import rospy
+from sensor_msgs.msg import JointState
+
+from markers import *
+from functions import *
+from roslib import packages
+#<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+# Initialize the node
+rospy.init_node("testKineControlPosition")
+print('starting motion ... ')
+# Publisher: publish to the joint_states topic
+pub = rospy.Publisher('joint_states', JointState, queue_size=10)
+# Files for the logs
+fxcurrent = open("/home/user/xcurrent.txt", "w")                
+fxdesired = open("/home/user/xdesired.txt", "w")
+fq = open("/home/user/q.txt", "w")
+
+# Markers for the current and desired positions
+bmarker_current  = BallMarker(color['RED'])
+bmarker_desired = BallMarker(color['GREEN'])
+
+# Joint names
+jnames = ['Rev15', 'Rev11', 'Rev9', 'Rev7', 'Rev5', 'Rev3', 'Rev1']
+#jnames = ['Rev1', 'Rev3', 'Rev5', 'Rev7', 'Rev9', 'Rev11', 'Rev15']
+
+# Desired position
+xd = np.array([0.28151, 0.31104,0.29091])
+#xd = np.array([-0.279, -0.268,0.462])
+#xd = np.array([-0.307, -0.315,0.57])
+
+# Initial configuration
+q0  = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+# Resulting initial position (end effector with respect to the base link)
+T = fkine_ur5(q0)
+x0 = T[0:3,3]      #initial position(x,y,z)
+# Red marker shows the achieved position
+bmarker_current.xyz(x0)
+# Green marker shows the desired position
+bmarker_desired.xyz(xd)
+
+# Instance of the JointState message
+jstate = JointState()
+# Values of the message
+jstate.header.stamp = rospy.Time.now()
+jstate.name = jnames
+# Add the head joint value (with value 0) to the joints
+jstate.position = q0
+#pub.publish(jstate)
+
+
+# Frequency (in Hz) and control period 
+freq = 20
+dt = 1.0/freq
+rate = rospy.Rate(freq)
+
+# Initial joint configuration
+q = q0
+k = 1
+t = 0
+# Main loop
+
+while not rospy.is_shutdown():
+    '''
+    # Current time (needed for ROS)
+    jstate.header.stamp = rospy.Time.now()
+    # Kinematic control law for position (complete here)
+    # -----------------------------
+    x = fkine_ur5(q)[0:3,3]
+    J = jacobian_ur5(q)
+    e = x - xd
+    q = q - dt*k*np.linalg.pinv(J).dot(e)
+    t = t + dt
+    # -----------------------------
+    '''
+    
+    print(q)
+    x = fkine_ur5(q0)[0:3,3]
+    
+    
+    # Log values                                                      
+    fxcurrent.write(str(x[0])+' '+str(x[1]) +' '+str(x[2])+'\n')
+    
+    fxdesired.write(str(xd[0])+' '+str(xd[1])+' '+str(xd[2])+'\n')
+    
+    fq.write(str(q[0])+" "+str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+" "+str(q[5])+" "+str(q[6])+"\n" )
+    
+    
+    # Publish the message
+    jstate.position = q
+    pub.publish(jstate)
+    bmarker_desired.xyz(xd)
+    bmarker_current.xyz(x)
+    # Wait for the next iteration
+    #min_err=0.01
+    #if(np.linalg.norm(e)<min_err):
+     #   break
+
+    # Wait for the next iteration
+    rate.sleep()
+
+print('ending motion ...')
+fxcurrent.close()
+fxdesired.close()
+fq.close()
+
